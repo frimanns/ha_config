@@ -1,0 +1,27 @@
+switch:
+  - name: "Shelly Plus 1PM Relay"
+    command_topic: "shellyplus1pm/rpc"
+    state_topic: "shellyplus1pm/status"
+    value_template: "{{ value_json['switch:0'].output }}"
+    payload_on: '{"id":1,"src":"homeassistant","method":"Switch.Set","params":{"id":0,"on":true}}'
+    payload_off: '{"id":1,"src":"homeassistant","method":"Switch.Set","params":{"id":0,"on":false}}'
+    state_on: true
+    state_off: false
+    qos: 1
+    retain: false
+
+sensor:
+  - name: "Shelly Plus Power"
+    state_topic: "shellyplus1pm/status/switch:0"
+    unit_of_measurement: "W"
+    value_template: "{{ value_json.apower }}"
+
+  - name: "Shelly Plus Energy"
+    state_topic: "shellyplus1pm/status/switch:0"
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json.aenergy.total }}"
+
+  - name: "Shelly Plus Temperature"
+    state_topic: "shellyplus1pm/status/switch:0"
+    unit_of_measurement: "°C"
+    value_template: "{{ value_json.temperature.tC }}"
